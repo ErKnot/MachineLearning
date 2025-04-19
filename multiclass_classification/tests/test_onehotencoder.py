@@ -11,7 +11,7 @@ class TestOnehotencoder(unittest.TestCase):
         data = [2, 1, 2]
         expected_result = np.array([[0,1], [1,0], [0,1]])
         result = onehotencoder(data)
-        self.assertTrue((result==expected_result).all(), "The arrays differ.")
+        self.assertTrue(np.array_equal(result,expected_result), "The arrays differ.")
 
     def test_list_numbers_2(self):
         """
@@ -21,7 +21,7 @@ class TestOnehotencoder(unittest.TestCase):
         expected_result = np.array([[0,1, 0], [0,0,1], [0,1,0]])
         classes_map = {0:0, 2:1, 1:2}
         result = onehotencoder(data, classes_map)
-        self.assertTrue((result==expected_result).all(), "The arrays differ.")
+        self.assertTrue(np.array_equal(result,expected_result), "The arrays differ.")
 
     def test_list_strings(self):
         """
@@ -30,7 +30,7 @@ class TestOnehotencoder(unittest.TestCase):
         data = ["orange", "banana"]
         expected_result = np.array([[0,1], [1,0]])
         result = onehotencoder(data)
-        self.assertTrue((result==expected_result).all(), "The arrys differ." )
+        self.assertTrue(np.array_equal(result,expected_result), "The arrys differ." )
 
 
     def test_list_strings(self):
@@ -41,7 +41,7 @@ class TestOnehotencoder(unittest.TestCase):
         expected_result = np.array([[1,0,0], [0,0,1]])
         classes_map = {"orange": 0, "car": 1, "banana": 2}
         result = onehotencoder(data, classes_map)
-        self.assertTrue((result==expected_result).all(), "The arrys differ." )
+        self.assertTrue(np.array_equal(result,expected_result), "The arrys differ." )
     
 
     def test_nparray(self):
@@ -51,7 +51,7 @@ class TestOnehotencoder(unittest.TestCase):
         data = np.array([[1], [2], [0]])
         expected_result = np.array(([[0,1,0], [0,0,1], [1,0,0]]))
         result = onehotencoder(data)
-        self.assertTrue((result==expected_result).all(), "The arrys differ." )
+        self.assertTrue(np.array_equal(result,expected_result), "The arrys differ." )
 
 
 
