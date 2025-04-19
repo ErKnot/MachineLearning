@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from multiclass_classification.multiclass import MulticlassClassification
+from multiclass_classification.multiclass_2 import MulticlassClassification
 
 import matplotlib.pyplot as plt
 import matplotlib
@@ -44,15 +44,15 @@ print("shape of y:", y.shape)
 
 
 learning_rate = 0.01
-n_iter = 100
+n_iter = 10
 mc = MulticlassClassification()
 mc.fit(X,y, learning_rate=learning_rate, n_iter=n_iter)
 print("fitted theta: ", mc.theta)
 print("n_classe=",mc.n_classes)
 print("classe=",mc.classes)
-
+# print(X @ mc.theta)
 predictions = mc.predict(X)
-print(predictions)
+# print(predictions)
 
 #
 # # Training the multiclass classification model

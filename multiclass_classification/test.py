@@ -12,6 +12,10 @@ def onehotencoder(y:np.ndarray, n_classes: int = None):
 
 y = [1, 2, 0, 0]
 
-result = onehotencoder(y, 3)
+w = np.array([[1], [0], [1], [1]])
+v = [[1], [0], [1], [1]]
+
+
+result = onehotencoder(v)
 print(result)
 

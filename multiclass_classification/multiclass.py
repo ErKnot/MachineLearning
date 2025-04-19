@@ -1,5 +1,5 @@
 import numpy as np
-from linear_regression.gradient_descent import stochastic_gradient_descent
+from multiclass_classification.gradient_descent import stochastic_gradient_descent
 
 def softmax(x : np.ndarray, axis: int = 0):
     exp_x = np.exp(x)
@@ -25,6 +25,7 @@ In a classification problem with C classes, each feature vector is multiplied (v
         self._fit_method_called = None
 
     def fit(self, learning_rate: float = 0.01, batch_size: int = None, n_iter: int = 100, random_seed: int = None) -> None:
+
 
         """
         Uses a gradient descent algorithm to fit the parameters of a multi-class classification model from a training set.

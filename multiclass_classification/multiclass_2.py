@@ -103,6 +103,8 @@ In a classification problem with C classes, each feature vector is multiplied (v
         Xtheta = - X @ theta
         Prob = softmax(Xtheta, axis=1)
         Y_hotencoded = onehotencoder(Y)
-        # print(Y_hotencoded)
+        # print("y hotencoded:",Y_hotencoded.shape)
+        # print("prob:", Prob.shape)
+        # print("Probabilities:", Prob)
         return 1/n_samples * (X.T @ (Y - Prob))
 
