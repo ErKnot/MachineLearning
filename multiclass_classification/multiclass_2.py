@@ -44,7 +44,7 @@ class MulticlassClassification:
         self.theta, self._theta_training_history = stochastic_gradient_descent(
                         vector=self.theta,
                         learning_rate=learning_rate,
-                        gradient=self.cost_function,
+                        gradient=self.gradient_cost_function,
                         X=self._X, 
                         y=self.y,
                         batch_size=batch_size,
@@ -64,10 +64,27 @@ class MulticlassClassification:
         if not self._fit_method_called:
             raise RuntimeError("The method predict can not be called without calling the fit method sucessfully first.")
 
-        return np.argmax(-X @ self.theta, axis = 1, keepdims = keepdims)
+        scores = -X @ self.theta
+        scores_max = np.max(-X @ self.theta, axis=1, keepdims=True)
+        return np.where(scores == scores_max, 1, 0) 
 
-    def cost_function(self, theta:np.array, X:np.ndarray, Y:np.array) -> np.ndarray:
+    def cost_function(self, theta:np.ndarray, X:np.ndarray, Y:np.array) -> float:
+        Xtheta = - X @ theta
+        sm_Xtheta = softmax(Xtheta, axis=1)
+        return - np.trace(np.log(sm_Xtheta @ Y.T))
+
+    def gradient_cost_function(self, theta:np.ndarray, X:np.ndarray, Y:np.array) -> np.ndarray:
+        """
+        The cost function used for fitting the model. To avoid overflow we use the mean of the gradient of the likelihood function.
+        """
         Xtheta = - X @ theta
         sm_Xtheta = softmax(Xtheta, axis=1)
         return - 1/X.shape[0] * X.T @ (sm_Xtheta - Y)
+    
+    def training_history(self) -> list:
+        # check if the model has been fitted
+        if not self._fit_method_called:
+            raise RuntimeError("The method predict can not be called without calling the fit method sucessfully first.")
 
+        cost_training_history = [self.cost_function(theta, self._X, self.y) for theta in self._theta_training_history]
+        return cost_training_history
