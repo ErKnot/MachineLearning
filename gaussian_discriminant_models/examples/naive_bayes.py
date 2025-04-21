@@ -8,7 +8,7 @@ from scipy.stats import multivariate_normal
 from gaussian_discriminant_models.gaussian_naive_bayes import GaussianNaiveBayes
 
 # Randomly generate a dataset fallowing multivariate gaussians random density functions.
-# We define a mean vector and a covariance matrix for each class of datapoints.
+# We define a mean vector and a covariance matrix (positive semidefined) for each class of datapoints.
 # Since whe are testing Gaussian naive Bayes, in this example we will use diagonal covarian matrices. 
 mean_1 = (-1, 2)
 cov_1 = [[2,0], [0,1]]
@@ -42,6 +42,11 @@ print("predicted class priors:\n", gnb.class_priors)
 # test_data = np.array([[1, 2], [3, 4], [6, 0], [-1, 3], [4, 0]])
 # test_data = class_1
 results = gnb.predict(X)
+print("Shape of the predictions: ",results.shape)
+class_pred_1 = Xy[results.ravel() == 0, :]
+class_pred_2 = Xy[results.ravel() == 1]
+class_pred_3 = Xy[results.ravel() == 2]
+# vector with true every time the prediction was correct
 right_predictions = y == results.flatten()
 
 print("Accuracy on the training set: ", np.sum(right_predictions) / right_predictions.shape[0])
@@ -69,12 +74,12 @@ ax[0].plot(class_3[:,0], class_3[:,1], '.', c='m')
 ax[0].grid()
 
 # plotting the dataset with the countour lines of the predicted density functions
-ax[1].set_title("Countour lines of the predicted prob. density functions")
+ax[1].set_title("Countour lines of the predicted prob. density functions and\n predictions for the training set")
 ax[1].set_ylabel("y")
 ax[1].set_xlabel("x")
-ax[1].plot(class_1[:,0], class_1[:,1], '.', c='r')
-ax[1].plot(class_2[:,0], class_2[:,1], '.', c='b')
-ax[1].plot(class_3[:,0], class_3[:,1], '.', c='m')
+ax[1].plot(class_pred_1[:,0], class_pred_1[:,1], '.', c='r')
+ax[1].plot(class_pred_2[:,0], class_pred_2[:,1], '.', c='b')
+ax[1].plot(class_pred_3[:,0], class_pred_3[:,1], '.', c='m')
 ax[1].contour(x, y, z[0,:,:] )
 ax[1].contour(x, y, z[1,:,:] )
 ax[1].contour(x, y, z[2,:,:] )
