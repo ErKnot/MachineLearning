@@ -2,7 +2,7 @@ import numpy as np
 
 class GaussianLinearDiscriminant:
     """
-    A Gaussian linear discriminant model that fits to a training dataset and makes predictions. 
+    A Gaussian linear discriminant classifier that fits to a training dataset and makes predictions. 
     The model assumes that each class follows a Gaussian (normal) distribution for each feature with a common covariant matrix for all classes.
 
     Some mathematical simplifications are used to speed up computations. For example, the actual multivariate Gaussian distribution is never computed directly; instead, only the arguments of its exponentials are used. Additionally, when predicting the class label for a vector, we only consider the addends that vary across classes, ignoring constants that remain the same for all classes.
@@ -22,7 +22,7 @@ class GaussianLinearDiscriminant:
         
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         """
-        Fit the Gaussian linear discriminant model to the training data.
+        Fit the Gaussian linear discriminant classifier model to the training data.
 
         Args:
             X: the feature matrix of the training dataset.
@@ -56,7 +56,7 @@ class GaussianLinearDiscriminant:
 
         self.cov_matrix = 1 / self.n_samples * self.cov_matrix_addends.sum(axis = 0)
 
-        # indicate that the fit method as been called successfully
+        # indicates that the fit method as been called successfully
         self._fit_method_called = True
 
 
@@ -84,7 +84,7 @@ class GaussianLinearDiscriminant:
             # we compute the arguments of the exponential of the gaussian density fucntion
             # for each feature vector
             arg_exp = np.sum((diff @ inv_cov_matrix) * diff, axis = 1)
-            ranks[:,num] = (-0.5*np.log(det_cov_matrix)- 0.5 * arg_exp) + np.log(self.class_priors[num])
+            ranks[:,num] = (- 0.5 * arg_exp) + np.log(self.class_priors[num])
         self.predictions = np.argmax(ranks, axis=1, keepdims=True)
         return self.predictions
             
