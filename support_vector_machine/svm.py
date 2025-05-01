@@ -24,7 +24,20 @@ class SVM:
     def fit(self, X:np.ndarray, vect: np.ndarray, intercept: float, lagrange_mlp: np.ndarray):
         pass
 
-    def kkt_conditions(self, )
+    def compute_score(self, x, X, targets, alphas, kernel, b):
+        yalphas = targets * alphas
+        return yalphas.reshape(1, -1) @ kernel(X, x) + b
+
+    def compute_errors(self, X, targets, alphas, kernel, b):
+        scores = compute_score
+
+
+    
+
+    def kkt_conditions(self, a, y, u, x, c):
+        pass
+        
+
     def compute_boundaries(self, a_1: float, a_2: float, y_1: int, y_2: int, c: float):
         """
         Compute the boundaries of the lagrangian multiplier a_2.
@@ -69,7 +82,7 @@ class SVM:
         return kernel(x_1, x_1) + kernel(x_2, x_2) - 2 * kernel(x_1, x_2)
 
 
-    def compute_a_i(a_1: float, a_2: float,s: int, L: float, H: float, eta: float, err_1, err_2):
+    def compute_a_2(a_1: float, a_2: float,s: int, L: float, H: float, eta: float, err_1, err_2):
 
         """
         Compute the Lagrange multipliers a_1_cl and a_2_cl

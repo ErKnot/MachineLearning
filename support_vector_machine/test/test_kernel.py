@@ -16,6 +16,12 @@ class TestKernel(unittest.TestCase):
         correct_result = np.array([1,3,3,13]).reshape(2,2)
         self.assertTrue(np.array_equal(linear_kernel(v,w), correct_result), 'The kernel of two matrices is wrong.')
 
+    def test_kernel_matrix_vector(self):
+        v = np.array(np.arange(0,4)).reshape(2,2)
+        w = np.array([1, 2])
+        correct_result = np.array([2,8])
+        result = linear_kernel(v,w)
+        self.assertTrue(np.array_equal(result, correct_result), "The kernel between a matrix and an array is wrong.")
         
 
 
