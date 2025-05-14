@@ -101,6 +101,8 @@ def compute_threshold(e1, e2, x1, x2, y1, y2, a1, a1_new, a2, a2_new, kernel, c,
 
 
 def take_step(i1, i2, trainings, targets, alphas,E_chache, b, c = 1, tol = 1e-3):
+    print("i1 is:", i1)
+    print(i2)
 
     if i1 == i2:
         return 0
@@ -143,6 +145,7 @@ def find_nb(targets, alphas, kernel, c = 1, tol = 0.01):
 
 def second_choice(E_nb, E2):
     absE = np.abs(E2 - E_nb)
+    print("absE is:", absE)
     return np.argmax(absE)
 
 
@@ -150,26 +153,28 @@ def second_choice(E_nb, E2):
 def examin_example(i2, training, targets, alphas, err_cache, kernel, c = 1, tol = 1e-3):
 
     y2 = targets[i2]
+    # print("y2", y2)
     a2 = alphas[i2]
-    E2 = err_cache[i2] 
+    E2 = err_cache[0][i2] 
+    # print("E2: ", E2)
     r2 = E2 * y2
-    print(r2)
-    print(type(r2))
+    # print(r2)
+    # print(type(r2))
 
     nb_idx = find_nb(targets, alphas, kernel, c, tol)
     # E_nb = predict(training[non_bounds,:]) - targets[non_bounds]
 
     if (r2 < -tol and a2 < c) or (r2 > tol and a2 > 0):
         # Choose the Lagrange multipliers that do not belongs to the boundry of [0, c]
-        if len(non_bounds) > 1:
-            i1 = second_choice(E_nb, E2)
-            i1 = training[non_bounds[i1]]
-            if take_step(i1, i2, trainings, targets, alphas,E2, c):
+        if len(nb_idx) > 1:
+            i1 = second_choice(err_cache, E2)
+            i1 = training[nb_idx[i1]]
+            if take_step(i1, i2, training, targets, alphas,E2, c):
                 return 1
 
         # If no ggood candidate for i1 is found in the previous loop, it loops over le non  boud Lagrange multipliers
         for i1 in np.random.permutation(nb_idx):
-            if take_step(i1, i2, trainings, targets, alphas,E2, c):
+            if take_step(i1, i2, training, targets, alphas,E2, c):
                 return 1
         # If there aren't non bound Lagrange multipliers it loops over all the multipliers
         for i1 in np.random.permutation(len(targets)):
@@ -183,6 +188,7 @@ def main(training, targets, alphas, b, kernel, tol, c):
     num_changed = 0
     examin_all = 1
     err_cache = compute_scores(training, training, targets, alphas, kernel, b) - targets
+    print(err_cache)
 
     while num_changed > 0 or examin_all:
         num_changed = 0
